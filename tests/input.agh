@@ -1,0 +1,8 @@
+llgj
+k  j
+khhh
+
+Broken beacuse of how we handle Userinput.
+This should be a loop that constantly takes
+new Userinput but crashes the second time.
+     
