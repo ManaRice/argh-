@@ -14,5 +14,5 @@ rustc argh.rs
 
 ## Argh scripts
 Most of the argh scripts are not written by me and
-are instead found on the creators repository of thier
-argh! interpreter.
+are instead found on the creator's repository of thier
+argh! interpreter at http://hg.intevation.org/argh
