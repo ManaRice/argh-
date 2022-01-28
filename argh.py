@@ -61,9 +61,9 @@ class Direction:
 EOF_CHAR = '\0'
 SLOW = False
 NORTH = Direction( 0, -1 )
-WEST  = Direction( 1,  0 )
+EAST  = Direction( 1,  0 )
 SOUTH = Direction( 0,  1 )
-EAST  = Direction(-1,  0 )
+WEST  = Direction(-1,  0 )
 
 # Instructions
 
@@ -248,7 +248,7 @@ class Turn(Instruction):
 class Shebang(Instruction):
     def handle(self, interpreter):
         if interpreter.position == Position():
-            if interpreter.get_instruction_at(WEST).char_value == ord('!'):
+            if interpreter.get_instruction_at(EAST).char_value == ord('!'):
                 interpreter.dir = SOUTH
         else:
             super().handle(interpreter)
@@ -260,13 +260,13 @@ class Quit(Instruction):
 def instruction_create(char_value):
     try:
         if chr(char_value).lower() == 'h':
-            return MoveEast(char_value)
+            return MoveWest(char_value)
         elif chr(char_value).lower() == 'j':
             return MoveSouth(char_value)
         elif chr(char_value).lower() == 'k':
             return MoveNorth(char_value)
         elif chr(char_value).lower() == 'l':
-            return MoveWest(char_value)
+            return MoveEast(char_value)
         elif chr(char_value).lower() == 'a':
             return StackAdd(char_value)
         elif chr(char_value).lower() == 'r':
@@ -356,7 +356,7 @@ class Stack:
 class Interpreter:
     def __init__(self, code_box):
         self.code_box = Codebox(code_box)
-        self.dir = WEST
+        self.dir = EAST
         self.position = Position()
         self.stack = Stack()
         self.input = None
@@ -390,22 +390,22 @@ class Interpreter:
 
     def turn_left(self):
         if self.dir == NORTH:
-            self.dir = EAST
-        elif self.dir == WEST:
-            self.dir = NORTH
-        elif self.dir == SOUTH:
             self.dir = WEST
         elif self.dir == EAST:
+            self.dir = NORTH
+        elif self.dir == SOUTH:
+            self.dir = EAST
+        elif self.dir == WEST:
             self.dir = SOUTH
 
     def turn_right(self):
         if self.dir == NORTH:
-            self.dir = WEST
-        elif self.dir == WEST:
-            self.dir = SOUTH
-        elif self.dir == SOUTH:
             self.dir = EAST
         elif self.dir == EAST:
+            self.dir = SOUTH
+        elif self.dir == SOUTH:
+            self.dir = WEST
+        elif self.dir == WEST:
             self.dir = NORTH
 
     def argh(self):

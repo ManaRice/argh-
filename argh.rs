@@ -55,8 +55,8 @@ struct Direction {
 impl Direction {
     pub const NORTH: Direction = { Direction { xoff:  0, yoff: -1 }};
     pub const SOUTH: Direction = { Direction { xoff:  0, yoff:  1 }};
-    pub const WEST:  Direction = { Direction { xoff:  1, yoff:  0 }};
-    pub const EAST:  Direction = { Direction { xoff: -1, yoff:  0 }};
+    pub const WEST:  Direction = { Direction { xoff: -1, yoff:  0 }};
+    pub const EAST:  Direction = { Direction { xoff:  1, yoff:  0 }};
 
     #[allow(dead_code)]
     pub fn to_string(&self) -> String {
@@ -64,8 +64,8 @@ impl Direction {
         match (self.xoff, self.yoff) {
             ( 0, -1)  => String::from("North"),
             ( 0,  1)  => String::from("South"),
-            ( 1,  0)  => String::from("West"),
-            (-1,  0)  => String::from("East"),
+            (-1,  0)  => String::from("West"),
+            ( 1,  0)  => String::from("East"),
             _         => String::from("NOT A VALID DIRECTION!")
         }
     }
@@ -149,7 +149,7 @@ impl Interpreter {
     pub fn new(codebox: Codebox) -> Interpreter {
         Interpreter {
             codebox:   codebox,
-            direction: Direction::WEST,
+            direction: Direction::EAST,
             position:  Position {x: 0, y: 0},
             stack:     Vec::new(),
             input:     None,
@@ -167,14 +167,14 @@ impl Interpreter {
             }
 
             match Codebox::i32_as_char(*instruction.unwrap()) {
-                'h' => self.r#move(Direction::EAST),
-                'H' => self.move_until(Direction::EAST),
+                'h' => self.r#move(Direction::WEST),
+                'H' => self.move_until(Direction::WEST),
                 'j' => self.r#move(Direction::SOUTH),
                 'J' => self.move_until(Direction::SOUTH),
                 'k' => self.r#move(Direction::NORTH),
                 'K' => self.move_until(Direction::NORTH),
-                'l' => self.r#move(Direction::WEST),
-                'L' => self.move_until(Direction::WEST),
+                'l' => self.r#move(Direction::EAST),
+                'L' => self.move_until(Direction::EAST),
                 'a' => self.stack_add(Direction::SOUTH),
                 'A' => self.stack_add(Direction::NORTH),
                 'r' => self.stack_reduce(Direction::SOUTH),
@@ -306,8 +306,8 @@ impl Interpreter {
     fn turn_right(&mut self) {
         if *self.stack.last().unwrap() > 0 {
             match (self.direction.xoff, self.direction.yoff) {
-                ( 0, -1)  => self.direction = Direction::WEST,
-                ( 0,  1)  => self.direction = Direction::EAST,
+                ( 0, -1)  => self.direction = Direction::EAST,
+                ( 0,  1)  => self.direction = Direction::WEST,
                 ( 1,  0)  => self.direction = Direction::SOUTH,
                 (-1,  0)  => self.direction = Direction::NORTH,
                 _         => self.argh()
@@ -318,8 +318,8 @@ impl Interpreter {
     fn turn_left(&mut self) {
         if *self.stack.last().unwrap() < 0 {
             match (self.direction.xoff, self.direction.yoff) {
-                ( 0, -1)  => self.direction = Direction::EAST,
-                ( 0,  1)  => self.direction = Direction::WEST,
+                ( 0, -1)  => self.direction = Direction::WEST,
+                ( 0,  1)  => self.direction = Direction::EAST,
                 ( 1,  0)  => self.direction = Direction::NORTH,
                 (-1,  0)  => self.direction = Direction::SOUTH,
                 _         => self.argh()
